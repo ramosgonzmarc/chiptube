@@ -101,7 +101,8 @@ cd ../results
 i=1
 while [ $i -le $NUMSAMPLES ]
 do
-        qsub -o sample_$i -N sample_$i $INSDIR/chipseq/chipseq_sample_processing $WD/$EXP/samples/sample_$i $i $TYPE $EXP
+	j=$(($i - 1))
+	qsub -o sample_$i -N sample_$i $INSDIR/chipseq/chipseq_sample_processing $WD/$EXP/samples/sample_$i $i $TYPE[$j] $EXP
         ((i++))
 done
 
