@@ -105,9 +105,14 @@ cd ../results
 i=1
 while [ $i -le $NUMREPLICAS ]
 do
+<<<<<<< HEAD
         qsub -o sample_chip_$i -N sample_chip_$i $INSDIR/tarea/chipseq_bag2020/sample_processing $WD/$EXP/samples/replica_$i $i $EXP
         
         qsub -o sample_input_$i -N sample_input_$i $INSDIR/tarea/chipseq_bag2020/sample_processing $WD/$EXP/samples $i $EXP
+=======
+	j=$(($i - 1))
+	qsub -o sample_$i -N sample_$i $INSDIR/chipseq/chipseq_sample_processing $WD/$EXP/samples/sample_$i $i $TYPE[$j] $EXP
+>>>>>>> bd98511c8651c38ec5d3430dfaf9a842546ee579
         ((i++))
 done
 
