@@ -1,10 +1,11 @@
-installation_directory: /home/socram/github_repos
-working_directory: /home/socram/tmp
-experiment_name: polycomb
-number_samples: 2
-path_genome: /home/socram/rnaseqdata/chr5.fa
-path_annotation: /home/socram/rnaseqdata/chr5.gtf
-path_sample_1: /home/socram/rnaseqdata/col0_7dag_chr5_1.fastq.gz
-path_sample_2: /home/socram/rnaseqdata/col0_7dag_chr5_2.fastq.gz
-sample_type_1: chip
-sample_type_2: input
+installation_directory: /home/marborpal
+working_directory: /home/marborpal/tarea
+experiment_name: tarea_bash
+number_replicas: 2
+path_genome: /home/marborpal/chipseqdata/genome.fa
+path_annotation: /home/marborpal/chipseqdata/annotation.gtf
+path_sample_chip_1: /home/marborpal/chipseqdata/sample_chip_1.fastq.gz
+path_sample_chip_2: /home/marborpal/chipseqdata/sample_chip_2.fastq.gz
+path_sample_input_1: /home/marborpal/chipseqdata/sample_input_1.fastq.gz
+path_sample_input_2: /home/marborpal/chipseqdata/sample_input_2.fastq.gz
+
