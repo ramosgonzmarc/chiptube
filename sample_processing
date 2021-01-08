@@ -6,6 +6,9 @@
 REPLICASDIR=$1
 i=$2
 EXP=$3
+NUMREPLICAS=$4
+GENOME=$5
+INSDIR=$6
 
 echo ""
 echo "========================"
@@ -16,63 +19,68 @@ echo ""
 cd ${REPLICASDIR} 
 
 ## Sample quality control and read mapping to reference genome
-while [ $i -le $NUMREPLICAS ]
-do
-    cd replica_$i/chip
-    fastqc sample_chip_$i.fq.gz
-    bowtie2 -x ../../genome/index -U sample_chip_$i.fq.gz -S $chip_$i.sam
-    cd ../input
-    fastqc sample_input_$i.fq.gz
-    bowtie2 -x ../../genome/index -U sample_input_$i.fq.gz -S $input_$i.sam
-    cd ../..
-    ((i++)
-done
-
+cd chip
+fastqc sample_chip_$i.fq.gz
+bowtie2 -x ../../../genome/index -U sample_chip_$i.fq.gz -S chip_$i.sam
+cd ../input
+fastqc sample_input_$i.fq.gz
+bowtie2 -x ../../../genome/index -U sample_input_$i.fq.gz -S input_$i.sam
+cd ..
 
 ## Generating sorted bam file
-while [ $i -le $NUMREPLICAS ]
-do
-  cd replica_$i/chip
-  samtools sort -o $chip_$i.bam $chip_$i.sam
-  rm $chip_$i.sam
-  samtools index $chip_$i.bam
-  cd ../input
-  samtools sort -o $input_$i.bam $input_$i.sam
-  rm $input_$i.sam
-  samtools index $input_$i.bam
-  ((i++))
-done
+
+cd chip
+samtools sort -o chip_$i.bam chip_$i.sam
+rm chip_$i.sam
+samtools index chip_$i.bam
+cd ../input
+samtools sort -o input_$i.bam input_$i.sam
+rm input_$i.sam
+samtools index input_$i.bam
+cd ..
   
+## Peaks calling 
 
-#Write on blackboard
-while [ $i -le $NUMREPLICAS ]
-do
-  cd replica_$i/chip
-  echo "chip_$i.bam done!!" >> ../../results/blackboard
-  cd ../../samples/replica_$i/input
-  echo "input_$i.bam done!!" > ../../results/blackboard
-  ((i++)
-done
+cd replica_results
+macs2 callpeak -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $EXP_$i
+echo "Peaks calling done!"
 
 
-#Read the blackboard
-NUM_PROC=$(wc -l ../../results/blackboard | awk '{print($1)}')
+echo ""
+echo "==================="
+echo "| REPLICA $i DONE |"
+echo "==================="
+echo ""
 
+## Write on blackboard 
 
-if [ $NUM_PROC -eq 4 ]
+echo "replica_$i done!!" >> ../../../results/blackboard
+
+## Read the blackboard
+
+NUM_PROC=$(wc -l ../../../results/blackboard | awk '{ print ($1) }')
+
+if [ $NUM_PROC -eq  $NUMREPLICAS ]
 then
-    while [ $i -le $NUMREPLICAS ]
-    do
-        macs2 callpeak -t ../samples/replica_$i/chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $EXP
-        cd ../..
+  bedtools intersect -a 1_summits.bed -b ../../replica_2/replica_results/2_summits.bed > ../../../results/merged.bed
+  i=3
+  if [ $i -ge $NUMREPLICAS ]
+  then
+      while [ $i -le $NUMREPLICAS ]
+      do
+        bedtools intersect -a merged.bed -b ../../replica_$i/replica_results/$i_summits.bed > ../../../results/merged.bed
         ((i++))
-    done
-    echo "Peaks calling done!"
+      done
+   fi
 fi
 
-echo ""
-echo "=================="
-echo "| SAMPLE $i DONE |"
-echo "=================="
-echo ""
+## Motif finding
+
+cd ../../../results 
+
+findMotifsGenome.pl merged.bed $GENOME . -len 9 -size 100
+
+## R script
+
+Rscript $INSDIR/r_script_ballgown.R merged.bed all
 

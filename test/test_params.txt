@@ -4,8 +4,8 @@ experiment_name: tarea_bash
 number_replicas: 2
 path_genome: /home/marborpal/chipseqdata/genome.fa
 path_annotation: /home/marborpal/chipseqdata/annotation.gtf
-path_sample_chip_1: /home/marborpal/chipseqdata/sample_chip_1.fastq.gz
-path_sample_chip_2: /home/marborpal/chipseqdata/sample_chip_2.fastq.gz
-path_sample_input_1: /home/marborpal/chipseqdata/sample_input_1.fastq.gz
-path_sample_input_2: /home/marborpal/chipseqdata/sample_input_2.fastq.gz
+path_sample_chip_1: /home/marborpal/chipseqdata/sample_chip_1.fq.gz
+path_sample_chip_2: /home/marborpal/chipseqdata/sample_chip_2.fq.gz
+path_sample_input_1: /home/marborpal/chipseqdata/sample_input_1.fq.gz
+path_sample_input_2: /home/marborpal/chipseqdata/sample_input_2.fq.gz
 

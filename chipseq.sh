@@ -35,18 +35,20 @@ echo "Reference genome = $GENOME"
 ANNOTATION=$(grep path_annotation: $PARAMS | awk '{print($2)}')
 echo "Annotation= $ANNOTATION"
 
-SAMPLES=()
+CHIPS=()
+INPUTS=()
 i=0
 while [ $i -lt $NUMREPLICAS ]
 do
         j=$(($i + 1))
-        SAMPLES[$i]=$(grep path_sample_chip_$j: $PARAMS | awk '{print($2)}')
-        SAMPLES[$i]=$(grep path_sample_input_$j: $PARAMS | awk '{print($2)}')
+        CHIPS[$i]=$(grep path_sample_chip_$j: $PARAMS | awk '{print($2)}')
+        INPUTS[$i]=$(grep path_sample_input_$j: $PARAMS | awk '{print($2)}')
         ((i++))
 done
 
 echo "Samples ="
-echo "${SAMPLES[@]}"
+echo "${CHIPS[@]}"
+echo "${INPUTS[@]}"
 
 
 ##Generating work space
@@ -72,13 +74,13 @@ while [ $i -le $NUMREPLICAS ]
 do
         mkdir replica_$i
         cd replica_$i
-        mkdir chip input
+        mkdir chip input replica_results
         cd chip 
         j=$(($i - 1))
-        cp ${SAMPLES[$j]} sample_chip_$i.fq.gz
+        cp ${CHIPS[$j]} sample_chip_$i.fq.gz
         cd ..
         cd input
-        cp ${SAMPLES[$j]} sample_input_$i.fq.gz
+        cp ${INPUTS[$j]} sample_input_$i.fq.gz
         cd ../..
         ((i++))
 done
@@ -88,8 +90,8 @@ done
 cd ../genome
 bowtie2-build genome.fa index
 
-echo "File size:" du -h*
-######## esto de du -h* no se como ponerlo para que funcione
+echo "File size:" du -h *
+
 
 echo ""
 echo "============="
@@ -105,14 +107,7 @@ cd ../results
 i=1
 while [ $i -le $NUMREPLICAS ]
 do
-<<<<<<< HEAD
-        qsub -o sample_chip_$i -N sample_chip_$i $INSDIR/tarea/chipseq_bag2020/sample_processing $WD/$EXP/samples/replica_$i $i $EXP
-        
-        qsub -o sample_input_$i -N sample_input_$i $INSDIR/tarea/chipseq_bag2020/sample_processing $WD/$EXP/samples $i $EXP
-=======
-	j=$(($i - 1))
-	qsub -o sample_$i -N sample_$i $INSDIR/chipseq/chipseq_sample_processing $WD/$EXP/samples/sample_$i $i $TYPE[$j] $EXP
->>>>>>> bd98511c8651c38ec5d3430dfaf9a842546ee579
+        qsub -o replica_$i -N replica_$i $INSDIR/tarea/chipseq_bag2020/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR
         ((i++))
 done
 
