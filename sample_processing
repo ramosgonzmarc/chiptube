@@ -9,6 +9,9 @@ EXP=$3
 NUMREPLICAS=$4
 GENOME=$5
 INSDIR=$6
+CHR=$7
+PVALUEGO=$8
+PVALUEKEGG=$9
 
 echo ""
 echo "========================"
@@ -72,15 +75,15 @@ then
         ((i++))
       done
    fi
+   
+   ## Motif finding
+   cd ../../../results 
+   findMotifsGenome.pl merged.bed $GENOME . -len 9 -size 100
+
+   ## R script
+   mkdir kegg_images
+   Rscript $INSDIR/tarea/chipseq_bag2020/chipseq_R.R merged.bed $CHR $PVALUEGO $PVALUEKEGG
 fi
 
-## Motif finding
 
-cd ../../../results 
-
-findMotifsGenome.pl merged.bed $GENOME . -len 9 -size 100
-
-## R script
-
-Rscript $INSDIR/r_script_ballgown.R merged.bed all
 
