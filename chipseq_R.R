@@ -1,5 +1,14 @@
 
 #############
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("ChIPseeker")
+BiocManager::install("org.At.tair.db")
+BiocManager::install("TxDb.Athaliana.BioMart.plantsmart28")
+BiocManager::install("clusterProfiler")
+BiocManager::install("pathview")
+
+
 library("ChIPseeker")
 library("org.At.tair.db")
 library("TxDb.Athaliana.BioMart.plantsmart28")
