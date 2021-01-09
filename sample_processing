@@ -47,7 +47,7 @@ cd ..
 cd replica_results
 macs2 callpeak -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $EXP_$i
 echo "Peaks calling done!"
-
+cd ../../..
 
 echo ""
 echo "==================="
@@ -57,32 +57,34 @@ echo ""
 
 ## Write on blackboard 
 
-echo "replica_$i done!!" >> ../../../results/blackboard
+echo "replica_$i done!!" >> results/blackboard
 
 ## Read the blackboard
 
-NUM_PROC=$(wc -l ../../../results/blackboard | awk '{ print ($1) }')
+NUM_PROC=$(wc -l results/blackboard | awk '{ print ($1) }')
 
 if [ $NUM_PROC -eq  $NUMREPLICAS ]
 then
-  bedtools intersect -a 1_summits.bed -b ../../replica_2/replica_results/2_summits.bed > ../../../results/merged.bed
+  bedtools intersect -a samples/replica_1/replica_results/1_summits.bed -b samples/replica_2/replica_results/2_summits.bed > results/merged_2.bed
   i=3
   if [ $i -ge $NUMREPLICAS ]
   then
       while [ $i -le $NUMREPLICAS ]
       do
-        bedtools intersect -a merged.bed -b ../../replica_$i/replica_results/$i_summits.bed > ../../../results/merged.bed
+        j=$(($i-1))
+        bedtools intersect -a results/merged_$j.bed -b samples/replica_$i/replica_results/$((i))_summits.bed > results/merged_$i.bed
         ((i++))
       done
    fi
    
    ## Motif finding
-   cd ../../../results 
-   findMotifsGenome.pl merged.bed $GENOME . -len 9 -size 100
+   cd results 
+   i=$(($i-1))
+   findMotifsGenome.pl merged_$i.bed $GENOME . -len 9 -size 100
 
    ## R script
    mkdir kegg_images
-   Rscript $INSDIR/tarea/chipseq_bag2020/chipseq_R.R merged.bed $CHR $PVALUEGO $PVALUEKEGG
+   Rscript $INSDIR/tarea/chipseq_bag2020/chipseq_R.R merged_$i.bed $CHR $PVALUEGO $PVALUEKEGG
 fi
 
 
