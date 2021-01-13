@@ -40,6 +40,8 @@ PVALUEGO=$(grep p_value_cutoff_go: $PARAMS | awk '{print($2)}')
 echo "P value cutoff for GO enrichment= $PVALUEGO"
 PVALUEKEGG=$(grep p_value_cutoff_kegg: $PARAMS | awk '{print($2)}')
 echo "P value cutoff for KEGG enrichment= $PVALUEKEGG"
+PEAK=$(grep type_of_peak: $PARAMS | awk '{print($2)}')
+echo "Type of peak= $PEAK"
 
 CHIPS=()
 INPUTS=()
@@ -113,7 +115,7 @@ cd ../results
 i=1
 while [ $i -le $NUMREPLICAS ]
 do
-        qsub -o replica_$i -N replica_$i $INSDIR/tarea/chipseq_bag2020/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $CHR $PVALUEGO $PVALUEKEGG
+        qsub -o replica_$i -N replica_$i $INSDIR/tarea/chipseq_bag2020/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $CHR $PVALUEGO $PVALUEKEGG $PEAK
         ((i++))
 done
 

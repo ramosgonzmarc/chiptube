@@ -13,3 +13,4 @@ path_sample_input_3: /home/marborpal/chipseqdata/sample_input_3.fq.gz
 universe_chromosomes: 1
 p_value_cutoff_go: 0.05
 p_value_cutoff_kegg: 0.1
+type_of_peak: 1
