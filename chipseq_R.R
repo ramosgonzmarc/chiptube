@@ -27,7 +27,7 @@ plotAnnoPie(peakAnno)
 df.annotation<-as.data.frame(peakAnno)
 promoter.df.annotation<-subset(df.annotation,annotation=="Promoter")
 regulome <- promoter.df.annotation$geneId
-
+write.table(regulome,file = "regulome.txt",sep = "\n",row.names = F)
 genes.atha<-as.data.frame(genes(txdb))
 {
   if (chromosomes == "all")
@@ -48,18 +48,53 @@ ego <- enrichGO(gene          = regulome,
                 ont           = "BP",
                 keyType = "TAIR", pvalueCutoff = p.value.go)
 
-barplot(ego,showCategory = 30)
-dotplot(ego, showCategory=30)
-cnetplot(ego)
-emapplot(ego)
+GO.enrichment <- as.data.frame(ego)
+write.table(GO.enrichment,file = "go_terms.tsv",sep="\t",row.names = F)
+
+if(nrow(GO.enrichment) == 0)
+{
+  print("No enrichment of GO terms detected")
+}
+
+#Cada gráfico necesita su propio if, si no, sólo aparece el último
+if(nrow(GO.enrichment) != 0)
+{
+  barplot(ego,showCategory = 30)
+}
+
+if(nrow(GO.enrichment) != 0)
+{
+  dotplot(ego, showCategory=30)
+}
+
+if(nrow(GO.enrichment) != 0)
+{
+  cnetplot(ego)
+}
+
+if(nrow(GO.enrichment) != 0)
+{
+  emapplot(ego)
+}
+
 
 pathway.enrich <- as.data.frame(enrichKEGG(gene=regulome, keyType = "kegg", 
                                            organism="ath", pvalueCutoff = p.value.kegg, pAdjustMethod = "BH"))
 
-for (i in 1:nrow(pathway.enrich))
-{
-  pathway.current.id <- pathway.enrich[i,1]
-  pathview(gene.data = regulome, pathway.id = pathway.current.id,species = "ath",
-           gene.idtype = "TAIR", kegg.dir = "kegg_images/")
-}
+write.table(pathway.enrich,file = "kegg_terms.tsv",sep="\t",row.names = F)
 
+{
+  if (nrow(pathway.enrich) == 0)
+  {
+    print("No enrichment of KEGG pathways detected")
+  }
+  else
+  {
+    for (i in 1:nrow(pathway.enrich))
+    {
+      pathway.current.id <- pathway.enrich[i,1]
+      pathview(gene.data = regulome, pathway.id = pathway.current.id,species = "ath",
+               gene.idtype = "TAIR", kegg.dir = "kegg_images/")
+    }
+  }
+}
