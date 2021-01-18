@@ -96,7 +96,7 @@ then
 
    ## R script
    mkdir kegg_images
-   Rscript $INSDIR/tarea/chipseq_bag2020/chipseq_R.R merged_$i.$EXT $CHR $PVALUEGO $PVALUEKEGG
+   Rscript $INSDIR/tarea/chipseq_bag2020/chiptube.R merged_$i.$EXT $CHR $PVALUEGO $PVALUEKEGG
 fi
 
 
