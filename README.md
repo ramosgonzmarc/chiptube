@@ -1,7 +1,7 @@
 # chipseq_bag2020
 *chipseq_bag2020* is a package aimed at ChIP-seq data analysis that is designed to be run under a Unix environment.
 
-The main script in the package is chiptube.sh. This script requires an exhaustive series of parameters for its execution, which must be specified all together in a single .txt file. This file's path has to be indicated every time the script is run, so for example:
+The main script in the package is chiptube.sh. This script requires an exhaustive series of parameters for its execution, which must be specified all together in a single .txt file. This file's path has to be indicated every time the script is run, i.e.:
 
   bash chiptube.sh /home/lola_flores/my_chip_experiment/my_parameters.txt 
   
