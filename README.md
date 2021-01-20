@@ -18,11 +18,13 @@ A model file containing such parameters is provided in *chipseq_bag2020*/test/te
   "universe_chromosomes:" -> the number of chromosomes of your organism that you have taken ChIP-seq data from; e.g. 2
   "p_value_cutoff_go:" -> *
   "p_value_cutoff_kegg:" -> *
-  "type_of_peak:" -> the type of peak you want *narrowPeak* to produce. The value of this parameter must be either 1 (narrow peak) or 2 (broad peak).
+  "type_of_peak:" -> the type of DNA fragments "peaks" you want to be considered statistically relevant. The value of this parameter must be either 1 (narrow peaks) or 2 (broad peaks). If you choose 1, then the analysis will be more restrictive, hence less peaks will be found.
 
 A summary of the steps followed by chiptube.sh when executed is shown below:
 
 Parameters are loaded -> Work space is generated -> Index for the reference genome is created -> Processing individual samples
 
-The last of these steps is carried out through an auxiliary script named sample_processing, which itself does as follows:
+The last of these steps is carried out through an auxiliary script named sample_processing, which itself does as follows for every sample:
+
+Parameters are loaded -> Sample quality control -> Mapping to the reference genome -> Conversion of sam into sorted bam -> Peak calling -> 
 
