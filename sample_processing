@@ -3,6 +3,7 @@
 #$ -cwd
 #$ -j yes
 
+## Loading parameters from the previous script.
 REPLICASDIR=$1
 i=$2
 EXP=$3
@@ -14,6 +15,7 @@ PVALUEGO=$8
 PVALUEKEGG=$9
 PEAK=$10
 
+## Processing the specified sample.
 echo ""
 echo "========================"
 echo "| PROCESSING SAMPLE $i |"
@@ -22,7 +24,7 @@ echo ""
 
 cd ${REPLICASDIR} 
 
-## Sample quality control and read mapping to reference genome
+## Sample quality control and read mapping to the reference genome.
 cd chip
 fastqc sample_chip_$i.fq.gz
 bowtie2 -x ../../../genome/index -U sample_chip_$i.fq.gz -S chip_$i.sam
@@ -31,8 +33,7 @@ fastqc sample_input_$i.fq.gz
 bowtie2 -x ../../../genome/index -U sample_input_$i.fq.gz -S input_$i.sam
 cd ..
 
-## Generating sorted bam file
-
+## Generating sorted bam file.
 cd chip
 samtools sort -o chip_$i.bam chip_$i.sam
 rm chip_$i.sam
@@ -43,22 +44,20 @@ rm input_$i.sam
 samtools index input_$i.bam
 cd ..
   
-## Peaks calling 
-
+## Peak calling.
 cd replica_results
 if [ $PEAK -eq 1 ]
 then
   macs2 callpeak -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $EXP_$i
   EXT=narrowPeak
 fi
-
 if [ $PEAK -eq 2 ]
 then
   macs2 callpeak --broad -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $EXP_$i
   EXT=broadPeak
 fi
 
-echo "Peaks calling done!"
+echo "Peak calling done!"
 cd ../../..
 
 echo ""
@@ -98,6 +97,3 @@ then
    mkdir kegg_images
    Rscript $INSDIR/tarea/chipseq_bag2020/chiptube.R merged_$i.$EXT $CHR $PVALUEGO $PVALUEKEGG
 fi
-
-
-
