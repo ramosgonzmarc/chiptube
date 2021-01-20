@@ -8,7 +8,7 @@ The main script in the package is chiptube.sh. This script requires an exhaustiv
 A model file containing such parameters is provided in *chipseq_bag2020*/test/test_params.txt. We strongly reccomend to use it as a template and customise it with the user's preferred values. As for this file:
 
   "installation_directory:" -> the directory you have installed the package in; e.g. /home/lola_flores/packages
-  "working_directory:" -> the directory where your analysis are to be saved; e.g. /home/lola_flores/my_chip_experiment
+  "working_directory:" -> the directory where your analysis are to be saved; e.g. /home/lola_flores/my_chip_experiments
   "experiment_name:" -> the name the folders and the results of your analysis will bear; e.g. chachi_chip
   "number_replicas:" -> the number of replicas you have conducted for your study, e.g. 3
   "path_genome:" -> the path that has to be followed to access the genome of the organism you have done your experiment with; e.g. /home/lola_flores/my_genomes/atha_genome.fa
