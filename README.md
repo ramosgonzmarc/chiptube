@@ -26,13 +26,11 @@ Parameters are loaded -> Work space is generated -> Index for the reference geno
 
 The last of these steps is carried out through an auxiliary script named sample_processing, which itself does as follows for every sample:
 
-Parameters are loaded -> Sample quality control -> Mapping to the reference genome -> Conversion of sam into sorted bam -> Peak calling
+Parameters are loaded -> Sample quality control -> Mapping to the reference genome -> Conversion of sam into sorted bam -> A blackboard is created to check whether both the input and chip files for a given sample are finished -> Peak calling
 
 Next, a message is written on a blackboard file for every processed sample. When the number of messages equals that of samples, further steps are followed:
 
-The results of all samples are intersected -> Motifs finding -> Visualisation
+The results of all samples are intersected -> Motifs are found
 
-For the visualisation, a further third script (this time in R) is used. This one works as follows:
-
-
+For the visualisation and the statistical analysis of the results, a further third script (this time in R) is used. This one works as follows:
 
