@@ -87,7 +87,7 @@ then
    i=$(($i-1))
    findMotifsGenome.pl merged_$i.$EXT $GENOME . -len 9 -size 100
 
-   ## R script
+   ## Running R script for visualisation.
    mkdir kegg_images
    Rscript $INSDIR/tarea/chipseq_bag2020/chiptube.R merged_$i.$EXT $CHR $PVALUEGO $PVALUEKEGG
 fi
