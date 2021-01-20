@@ -26,7 +26,7 @@ Parameters are loaded -> Work space is generated -> Index for the reference geno
 
 The last of these steps is carried out through an auxiliary script named sample_processing, which itself does as follows for every sample:
 
-Parameters are loaded -> Sample quality control -> Mapping to the reference genome -> Conversion of sam into sorted bam -> A blackboard is created to check whether both the input and chip files for a given sample are finished -> Peak calling
+Parameters are loaded -> Sample quality control -> Mapping to the reference genome -> Conversion of sam into sorted bam -> Peak calling
 
 Next, a message is written on a blackboard file for every processed sample. When the number of messages equals that of samples, further steps are followed:
 
