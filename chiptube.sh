@@ -41,7 +41,7 @@ echo "P value cutoff for KEGG enrichment = $PVALUEKEGG"
 PEAK=$(grep type_of_peak: $PARAMS | awk '{print($2)}')
 echo "Type of peak = $PEAK"
 
-## Creating arrays for ChIP and input samples and filling them with the previously specified files.
+## Creating arrays for ChIP and input samples and filling them with the paths of the previously specified files.
 CHIPS=()
 INPUTS=()
 i=0
