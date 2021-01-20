@@ -56,26 +56,20 @@ then
   macs2 callpeak --broad -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $EXP_$i
   EXT=broadPeak
 fi
-
 echo "Peak calling done!"
 cd ../../..
-
 echo ""
 echo "==================="
 echo "| REPLICA $i DONE |"
 echo "==================="
 echo ""
 
-## Write on blackboard 
-
+## Writing & reading the blackboard. 
 echo "replica_$i done!!" >> results/blackboard
-
-## Read the blackboard
-
 NUM_PROC=$(wc -l results/blackboard | awk '{ print ($1) }')
-
 if [ $NUM_PROC -eq  $NUMREPLICAS ]
 then
+  ## To be named
   bedtools intersect -a samples/replica_1/replica_results/1_peaks.$EXT -b samples/replica_2/replica_results/2_peaks.$EXT > results/merged_2.$EXT
   i=3
   if [ $i -ge $NUMREPLICAS ]
@@ -88,7 +82,7 @@ then
       done
    fi
    
-   ## Motif finding
+   ## Motif finding.
    cd results 
    i=$(($i-1))
    findMotifsGenome.pl merged_$i.$EXT $GENOME . -len 9 -size 100
