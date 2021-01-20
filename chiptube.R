@@ -1,4 +1,4 @@
-
+## Loading parameters from the previous script.
 library("ChIPseeker")
 library("org.At.tair.db")
 library("TxDb.Athaliana.BioMart.plantsmart28")
