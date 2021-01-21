@@ -110,6 +110,6 @@ cd ../results
 i=1
 while [ $i -le $NUMREPLICAS ]
 do
-        qsub -o replica_$i -N replica_$i $INSDIR/chipseq_bag2020/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $CHR $PVALUEGO $PVALUEKEGG $PEAK
+        qsub -o replica_$i -N replica_$i $INSDIR/chiptube/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $CHR $PVALUEGO $PVALUEKEGG $PEAK
         ((i++))
 done
