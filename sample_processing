@@ -89,5 +89,5 @@ then
 
    ## Running R script for visualisation and statistical analysis.
    mkdir kegg_images
-   Rscript $INSDIR/chipseq_bag2020/chiptube.R merged_$((i)).$((EXT)) $CHR $PVALUEGO $PVALUEKEGG
+   Rscript $INSDIR/chiptube/chiptube.R merged_$((i)).$((EXT)) $CHR $PVALUEGO $PVALUEKEGG
 fi
