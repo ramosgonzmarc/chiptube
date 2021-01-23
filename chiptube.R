@@ -20,15 +20,15 @@ promoter <- getPromoters(TxDb=txdb, upstream=1000, downstream=1000)
 ## Calculating the distribution of peaks along the genome.
 covplot(peaks,weightCol = "V5")
 
-## Annotating peaks on the basis of the types of DNA regions they bind to.
+## Annotating peaks based on the types of DNA regions they bind to.
 peakAnno <- annotatePeak(peak = peaks, 
                          tssRegion=c(-1000, 1000),
                          TxDb=txdb,annoDb = "org.At.tair.db")
 plotAnnoPie(peakAnno)
 
-## Filtering the peaks and keeping those that bind to genetic promoters.
-df.annotation<-as.data.frame(peakAnno)
-promoter.df.annotation<-subset(df.annotation,annotation=="Promoter")
+## Saving the peaks that bind to genetic promoters.
+df.annotation <- as.data.frame(peakAnno)
+promoter.df.annotation <- subset(df.annotation,annotation=="Promoter")
 
 ## Defining genes affected by the TF (its regulome).
 regulome <- promoter.df.annotation$geneId
