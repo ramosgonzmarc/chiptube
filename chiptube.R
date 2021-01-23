@@ -83,7 +83,7 @@ if(nrow(GO.enrichment) != 0)
   emapplot(ego)
 }
 
-## kegg terms enrichment.
+## KEGG terms enrichment.
 pathway.enrich <- as.data.frame(enrichKEGG(gene=regulome, keyType = "kegg", 
                                            organism="ath", pvalueCutoff = p.value.kegg, pAdjustMethod = "BH"))
 write.table(pathway.enrich,file = "kegg_terms.tsv",sep="\t",row.names = F)
