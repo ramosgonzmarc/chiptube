@@ -12,25 +12,25 @@ chromosomes <- as.character(args[[2]])
 p.value.go <- as.numeric(args[[3]])
 p.value.kegg <- as.numeric(args[[4]])
 
-## Defining regions around promoters as potential binding sites for the TF.
+## Defining promoter regions.
 peaks <- readPeakFile(peakfile = peak.file,header= FALSE)
 txdb <- TxDb.Athaliana.BioMart.plantsmart28
 promoter <- getPromoters(TxDb=txdb, upstream=1000, downstream=1000)
 
-## Calculating the distribution of peaks along the genome.
+## Calculating the peak distribution along the genome.
 covplot(peaks,weightCol = "V5")
 
-## Annotating peaks based on the types of DNA regions they bind to.
+## Annotating peaks according to the types of DNA regions they bind to.
 peakAnno <- annotatePeak(peak = peaks, 
                          tssRegion=c(-1000, 1000),
                          TxDb=txdb,annoDb = "org.At.tair.db")
 plotAnnoPie(peakAnno)
 
-## Saving the peaks that correspond to genetic promoters.
+## Saving peaks that bind to promoter regions.
 df.annotation <- as.data.frame(peakAnno)
 promoter.df.annotation <- subset(df.annotation,annotation=="Promoter")
 
-## Defining genes affected by the TF (its regulome).
+## Listing genes affected by the TF (its regulome).
 regulome <- promoter.df.annotation$geneId
 write.table(regulome,file = "regulome.txt",sep = "\n",row.names = F)
 
