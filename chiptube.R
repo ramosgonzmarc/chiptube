@@ -26,7 +26,7 @@ peakAnno <- annotatePeak(peak = peaks,
                          TxDb=txdb,annoDb = "org.At.tair.db")
 plotAnnoPie(peakAnno)
 
-## Saving the peaks that bind to genetic promoters.
+## Saving the peaks that correspond to genetic promoters.
 df.annotation <- as.data.frame(peakAnno)
 promoter.df.annotation <- subset(df.annotation,annotation=="Promoter")
 
