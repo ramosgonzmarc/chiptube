@@ -7,7 +7,6 @@ EXP=$3
 NUMREPLICAS=$4
 GENOME=$5
 INSDIR=$6
-PEAK=$7
 
 ## Processing the specified sample.
 echo ""
@@ -40,16 +39,8 @@ cd ..
   
 ## Peak calling.
 cd replica_results
-if [ $PEAK -eq 1 ]
-then
-  macs2 callpeak -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $i
-  EXT=narrowPeak
-fi
-if [ $PEAK -eq 2 ]
-then
-  macs2 callpeak --broad -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $i
-  EXT=broadPeak
-fi
+macs2 callpeak -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $i
+  
 echo "Peak calling done!"
 cd ../../..
 echo ""
