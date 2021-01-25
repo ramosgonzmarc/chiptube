@@ -110,6 +110,29 @@ cd ../results
 i=1
 while [ $i -le $NUMREPLICAS ]
 do
-        qsub -o replica_$i -N replica_$i $INSDIR/chiptube/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $CHR $PVALUEGO $PVALUEKEGG $PEAK
+        bash $INSDIR/chiptube/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $PEAK
         ((i++))
 done
+
+## Intersecting the peaks from the different replicas and creating a final merged file.
+bedtools intersect -a samples/replica_1/replica_results/1_peaks.$EXT -b samples/replica_2/replica_results/2_peaks.$EXT > results/merged_2.$EXT
+i=3
+if [ $i -ge $NUMREPLICAS ]
+then
+    while [ $i -le $NUMREPLICAS ]
+    do
+      j=$(($i-1))
+      bedtools intersect -a results/merged_$((j)).$((EXT)) -b samples/replica_$i/replica_results/$((i))_peaks.$((EXT)) > results/merged_$((i)).$((EXT))
+      ((i++))
+    done
+fi
+   
+## Motif finding.
+cd results 
+i=$(($i-1))
+findMotifsGenome.pl merged_$((i)).$((EXT)) $GENOME . -len 9 -size 100
+
+## Running R script for visualisation and statistical analysis.
+mkdir kegg_images
+Rscript $INSDIR/chiptube/chiptube.R merged_$((i)).$((EXT)) $CHR $PVALUEGO $PVALUEKEGG
+
