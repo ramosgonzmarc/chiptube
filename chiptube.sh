@@ -38,8 +38,7 @@ PVALUEGO=$(grep p_value_cutoff_go: $PARAMS | awk '{print($2)}')
 echo "P value cutoff for GO enrichment = $PVALUEGO"
 PVALUEKEGG=$(grep p_value_cutoff_kegg: $PARAMS | awk '{print($2)}')
 echo "P value cutoff for KEGG enrichment = $PVALUEKEGG"
-PEAK=$(grep type_of_peak: $PARAMS | awk '{print($2)}')
-echo "Type of peak = $PEAK"
+
 
 ## Creating arrays for ChIP and input samples and filling them with the paths of the previously specified files.
 CHIPS=()
@@ -110,19 +109,19 @@ cd ../results
 i=1
 while [ $i -le $NUMREPLICAS ]
 do
-        bash $INSDIR/chiptube/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $PEAK
+        bash $INSDIR/chiptube/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR
         ((i++))
 done
 
 ## Intersecting the peaks from the different replicas and creating a final merged file.
-bedtools intersect -a samples/replica_1/replica_results/1_peaks.$EXT -b samples/replica_2/replica_results/2_peaks.$EXT > results/merged_2.$EXT
+bedtools intersect -a samples/replica_1/replica_results/1_peaks.narrowPeak -b samples/replica_2/replica_results/2_peaks.narrowPeak > results/merged_2.narrowPeak
 i=3
 if [ $i -ge $NUMREPLICAS ]
 then
     while [ $i -le $NUMREPLICAS ]
     do
       j=$(($i-1))
-      bedtools intersect -a results/merged_$((j)).$((EXT)) -b samples/replica_$i/replica_results/$((i))_peaks.$((EXT)) > results/merged_$((i)).$((EXT))
+      bedtools intersect -a results/merged_$((j)).narrowPeak -b samples/replica_$i/replica_results/$((i))_peaks.narrowPeak > results/merged_$((i)).narrowPeak
       ((i++))
     done
 fi
@@ -130,9 +129,9 @@ fi
 ## Motif finding.
 cd results 
 i=$(($i-1))
-findMotifsGenome.pl merged_$((i)).$((EXT)) $GENOME . -len 9 -size 100
+findMotifsGenome.pl merged_$((i)).narrowPeak $GENOME . -len 9 -size 100
 
 ## Running R script for visualisation and statistical analysis.
 mkdir kegg_images
-Rscript $INSDIR/chiptube/chiptube.R merged_$((i)).$((EXT)) $CHR $PVALUEGO $PVALUEKEGG
+Rscript $INSDIR/chiptube/chiptube.R merged_$((i)).narrowPeak $CHR $PVALUEGO $PVALUEKEGG
 
