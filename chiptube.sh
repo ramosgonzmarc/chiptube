@@ -114,20 +114,20 @@ do
 done
 
 ## Intersecting the peaks from the different replicas and creating a final merged file.
-bedtools intersect -a samples/replica_1/replica_results/1_peaks.narrowPeak -b samples/replica_2/replica_results/2_peaks.narrowPeak > results/merged_2.narrowPeak
+bedtools intersect -a ../samples/replica_1/replica_results/1_peaks.narrowPeak -b ../samples/replica_2/replica_results/2_peaks.narrowPeak > merged_2.narrowPeak
 i=3
 if [ $i -ge $NUMREPLICAS ]
 then
     while [ $i -le $NUMREPLICAS ]
     do
       j=$(($i-1))
-      bedtools intersect -a results/merged_$((j)).narrowPeak -b samples/replica_$i/replica_results/$((i))_peaks.narrowPeak > results/merged_$((i)).narrowPeak
+      bedtools intersect -a merged_$((j)).narrowPeak -b ../samples/replica_$i/replica_results/$((i))_peaks.narrowPeak > merged_$((i)).narrowPeak
       ((i++))
     done
 fi
    
 ## Motif finding.
-cd results 
+ 
 i=$(($i-1))
 findMotifsGenome.pl merged_$((i)).narrowPeak $GENOME . -len 9 -size 100
 
