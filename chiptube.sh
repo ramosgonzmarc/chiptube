@@ -118,6 +118,15 @@ done
 
 cd ..
 
+if [ $PEAK -eq 1 ]
+then
+  EXT=$(echo 'narrowPeak')
+fi
+
+if [ $PEAK -eq 2 ]
+then
+  EXT=$(echo 'broadPeak')
+fi
 i=3
 if [ $NUMREPLICAS -eq 1 ]
 then
