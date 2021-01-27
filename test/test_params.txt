@@ -1,5 +1,5 @@
 installation_directory: /home/marborpal
-working_directory: /home/marborpal/tarea
+working_directory: /home/marborpal
 experiment_name: tarea_bash
 number_replicas: 3
 path_genome: /home/marborpal/chipseqdata/genome.fa

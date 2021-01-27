@@ -49,7 +49,7 @@ genes.atha <- as.data.frame(genes(txdb))
   }
 }
 
-## GO terms enrichment.
+## GO terms BP enrichment.
 ego <- enrichGO(gene          = regulome,
                 universe      = my.universe,
                 OrgDb         = org.At.tair.db,
@@ -60,7 +60,7 @@ write.table(GO.enrichment,file = "go_terms.tsv",sep="\t",row.names = F)
 
 if(nrow(GO.enrichment) == 0)
 {
-  print("No enrichment of GO terms detected.")
+  print("No enrichment of GO terms for biological processes detected.")
 }
 
 if(nrow(GO.enrichment) != 0)
@@ -81,6 +81,74 @@ if(nrow(GO.enrichment) != 0)
 if(nrow(GO.enrichment) != 0)
 {
   emapplot(ego)
+}
+
+#GO terms MF enrichment.
+ego.mf <- enrichGO(gene          = regulome,
+                universe      = my.universe,
+                OrgDb         = org.At.tair.db,
+                ont           = "MF",
+                keyType = "TAIR", pvalueCutoff = p.value.go)
+GO.enrichment.mf <- as.data.frame(ego.mf)
+write.table(GO.enrichment.mf,file = "go_terms_mf.tsv",sep="\t",row.names = F)
+
+if(nrow(GO.enrichment.mf) == 0)
+{
+  print("No enrichment of GO terms detected for molecular functions.")
+}
+
+if(nrow(GO.enrichment.mf) != 0)
+{
+  barplot(ego.mf,showCategory = 30)
+}
+
+if(nrow(GO.enrichment.mf) != 0)
+{
+  dotplot(ego.mf, showCategory=30)
+}
+
+if(nrow(GO.enrichment.mf) != 0)
+{
+  cnetplot(ego.mf)
+}
+
+if(nrow(GO.enrichment.mf) != 0)
+{
+  emapplot(ego.mf)
+}
+
+#GO terms CC enrichment.
+ego.cc <- enrichGO(gene          = regulome,
+                   universe      = my.universe,
+                   OrgDb         = org.At.tair.db,
+                   ont           = "CC",
+                   keyType = "TAIR", pvalueCutoff = p.value.go)
+GO.enrichment.cc <- as.data.frame(ego.cc)
+write.table(GO.enrichment.cc,file = "go_terms_cc.tsv",sep="\t",row.names = F)
+
+if(nrow(GO.enrichment.cc) == 0)
+{
+  print("No enrichment of GO terms detected for celular components.")
+}
+
+if(nrow(GO.enrichment.cc) != 0)
+{
+  barplot(ego.cc,showCategory = 30)
+}
+
+if(nrow(GO.enrichment.cc) != 0)
+{
+  dotplot(ego.cc, showCategory=30)
+}
+
+if(nrow(GO.enrichment.cc) != 0)
+{
+  cnetplot(ego.cc)
+}
+
+if(nrow(GO.enrichment.cc) != 0)
+{
+  emapplot(ego.cc)
 }
 
 ## KEGG terms enrichment.
