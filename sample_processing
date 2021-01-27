@@ -41,13 +41,13 @@ cd ..
 ## Peak calling.
 cd replica_results
 
-if [ $((PEAK)) -eq 1 ]
+if [ $PEAK -eq 1 ]
 then
   macs2 callpeak -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $i
   EXT=$(echo 'narrowPeak')
 fi
 
-if [ $((PEAK)) -eq 2 ]
+if [ $PEAK -eq 2 ]
 then
   macs2 callpeak --broad -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $i
   EXT=$(echo 'broadPeak')
