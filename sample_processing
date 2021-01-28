@@ -21,10 +21,10 @@ cd ${REPLICASDIR}
 ## Sample quality control and mapping reads to the reference genome.
 cd chip
 fastqc sample_chip_$i.fq.gz
-bowtie2 -x ../../../genome/index -U sample_chip_$i.fq.gz -S chip_$i.sam
+bowtie2 -x ../../../genome/index -U sample_chip_$i.fq.gz -S chip_$i.sam 2> stats_chip_$i.txt
 cd ../input
 fastqc sample_input_$i.fq.gz
-bowtie2 -x ../../../genome/index -U sample_input_$i.fq.gz -S input_$i.sam
+bowtie2 -x ../../../genome/index -U sample_input_$i.fq.gz -S input_$i.sam 2> stats_input_$i.txt
 cd ..
 
 ## Generating sorted bam file.
