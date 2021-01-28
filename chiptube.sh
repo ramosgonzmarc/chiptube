@@ -110,7 +110,7 @@ cd ../results
 i=1
 while [ $i -le $NUMREPLICAS ]
 do
-        bash $INSDIR/chiptube/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $PEAK
+        bash $INSDIR/chiptube/sample_processing $WD/$EXP/samples/replica_$i $i $EXP $NUMREPLICAS $GENOME $INSDIR $PEAK | tee output_$i.txt
         ((i++))
 done
 
@@ -144,12 +144,13 @@ else
   fi
 fi
 
-## Motif finding.
 cd results
 i=$(($i-1))
-findMotifsGenome.pl merged_$((i)).${EXT} $GENOME . -len 9 -size 100
 
 ## Running R script for visualisation and statistical analysis.
 mkdir kegg_images
 Rscript $INSDIR/chiptube/chiptube.R merged_$((i)).${EXT} $CHR $PVALUEGO $PVALUEKEGG
+
+## Motif finding.
+findMotifsGenome.pl merged_$((i)).${EXT} $GENOME . -len 9 -size 100
 

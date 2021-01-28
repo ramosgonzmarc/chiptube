@@ -80,7 +80,7 @@ if(nrow(GO.enrichment) != 0)
 
 if(nrow(GO.enrichment) != 0)
 {
-  emapplot(ego)
+  emapplot(ego,showCategory=30)
 }
 
 #GO terms MF enrichment.
@@ -114,7 +114,7 @@ if(nrow(GO.enrichment.mf) != 0)
 
 if(nrow(GO.enrichment.mf) != 0)
 {
-  emapplot(ego.mf)
+  emapplot(ego.mf,showCategory=30)
 }
 
 #GO terms CC enrichment.
@@ -148,7 +148,7 @@ if(nrow(GO.enrichment.cc) != 0)
 
 if(nrow(GO.enrichment.cc) != 0)
 {
-  emapplot(ego.cc)
+  emapplot(ego.cc,showCategory=30)
 }
 
 ## KEGG terms enrichment.
