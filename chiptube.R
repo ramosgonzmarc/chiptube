@@ -58,30 +58,35 @@ ego <- enrichGO(gene          = regulome,
 GO.enrichment <- as.data.frame(ego)
 write.table(GO.enrichment,file = "go_terms.tsv",sep="\t",row.names = F)
 
+{
+  
 if(nrow(GO.enrichment) == 0)
 {
   print("No enrichment of GO terms for biological processes detected.")
 }
 
-if(nrow(GO.enrichment) != 0)
+else
 {
-  barplot(ego,showCategory = 30)
+  pdf(file = "plots_go_bp.pdf",width = 16, height = 16)
+  
+  a <- emapplot(ego,showCategory = 30)
+  plot(a)
+  
+  b <- goplot(ego,showCategory = 30)
+  plot(b)
+  
+  c <- barplot(ego,showCategory = 30)
+  plot(c)
+  
+  d <- dotplot(ego, showCategory=30)
+  plot(d)
+  
+  e <- cnetplot(ego)
+  plot(e)
+  
+  dev.off()
 }
-
-if(nrow(GO.enrichment) != 0)
-{
-  dotplot(ego, showCategory=30)
 }
-
-if(nrow(GO.enrichment) != 0)
-{
-  cnetplot(ego)
-}
-
-#####if(nrow(GO.enrichment) != 0)
-#####{
-#####  emapplot(ego,showCategory=30)
-#####}
 
 #GO terms MF enrichment.
 ego.mf <- enrichGO(gene          = regulome,
@@ -92,30 +97,35 @@ ego.mf <- enrichGO(gene          = regulome,
 GO.enrichment.mf <- as.data.frame(ego.mf)
 write.table(GO.enrichment.mf,file = "go_terms_mf.tsv",sep="\t",row.names = F)
 
+{
+
 if(nrow(GO.enrichment.mf) == 0)
 {
-  print("No enrichment of GO terms detected for molecular functions.")
+  print("No enrichment of GO terms for molecular functions detected.")
 }
 
-if(nrow(GO.enrichment.mf) != 0)
+else
 {
-  barplot(ego.mf,showCategory = 30)
+  pdf(file = "plots_go_mf.pdf",width = 16, height = 16)
+  
+  a <- emapplot(ego.mf,showCategory = 30)
+  plot(a)
+  
+  b <- goplot(ego.mf,showCategory = 30)
+  plot(b)
+  
+  c <- barplot(ego.mf,showCategory = 30)
+  plot(c)
+  
+  d <- dotplot(ego.mf, showCategory=30)
+  plot(d)
+  
+  e <- cnetplot(ego.mf)
+  plot(e)
+  
+  dev.off()
 }
-
-if(nrow(GO.enrichment.mf) != 0)
-{
-  dotplot(ego.mf, showCategory=30)
 }
-
-if(nrow(GO.enrichment.mf) != 0)
-{
-  cnetplot(ego.mf)
-}
-
-#####if(nrow(GO.enrichment.mf) != 0)
-#####{
-#####  emapplot(ego.mf,showCategory=30)
-#####}
 
 #GO terms CC enrichment.
 ego.cc <- enrichGO(gene          = regulome,
@@ -126,30 +136,35 @@ ego.cc <- enrichGO(gene          = regulome,
 GO.enrichment.cc <- as.data.frame(ego.cc)
 write.table(GO.enrichment.cc,file = "go_terms_cc.tsv",sep="\t",row.names = F)
 
+{
+
 if(nrow(GO.enrichment.cc) == 0)
 {
-  print("No enrichment of GO terms detected for celular components.")
+  print("No enrichment of GO terms for celular components detected.")
 }
 
-if(nrow(GO.enrichment.cc) != 0)
+else
 {
-  barplot(ego.cc,showCategory = 30)
+  pdf(file = "plots_go_cc.pdf",width = 16, height = 16)
+  
+  a <- emapplot(ego.cc,showCategory = 30)
+  plot(a)
+  
+  b <- goplot(ego.cc,showCategory = 30)
+  plot(b)
+  
+  c <- barplot(ego.cc,showCategory = 30)
+  plot(c)
+  
+  d <- dotplot(ego.cc, showCategory=30)
+  plot(d)
+  
+  e <- cnetplot(ego.cc)
+  plot(e)
+  
+  dev.off()
 }
-
-if(nrow(GO.enrichment.cc) != 0)
-{
-  dotplot(ego.cc, showCategory=30)
 }
-
-if(nrow(GO.enrichment.cc) != 0)
-{
-  cnetplot(ego.cc)
-}
-
-####if(nrow(GO.enrichment.cc) != 0)
-####{
-####  emapplot(ego.cc,showCategory=30)
-####}
 
 ## KEGG terms enrichment.
 pathway.enrich <- as.data.frame(enrichKEGG(gene=regulome, keyType = "kegg", 
