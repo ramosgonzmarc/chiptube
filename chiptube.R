@@ -78,10 +78,10 @@ if(nrow(GO.enrichment) != 0)
   cnetplot(ego)
 }
 
-if(nrow(GO.enrichment) != 0)
-{
-  emapplot(ego,showCategory=30)
-}
+#####if(nrow(GO.enrichment) != 0)
+#####{
+#####  emapplot(ego,showCategory=30)
+#####}
 
 #GO terms MF enrichment.
 ego.mf <- enrichGO(gene          = regulome,
@@ -112,10 +112,10 @@ if(nrow(GO.enrichment.mf) != 0)
   cnetplot(ego.mf)
 }
 
-if(nrow(GO.enrichment.mf) != 0)
-{
-  emapplot(ego.mf,showCategory=30)
-}
+#####if(nrow(GO.enrichment.mf) != 0)
+#####{
+#####  emapplot(ego.mf,showCategory=30)
+#####}
 
 #GO terms CC enrichment.
 ego.cc <- enrichGO(gene          = regulome,
@@ -146,10 +146,10 @@ if(nrow(GO.enrichment.cc) != 0)
   cnetplot(ego.cc)
 }
 
-if(nrow(GO.enrichment.cc) != 0)
-{
-  emapplot(ego.cc,showCategory=30)
-}
+####if(nrow(GO.enrichment.cc) != 0)
+####{
+####  emapplot(ego.cc,showCategory=30)
+####}
 
 ## KEGG terms enrichment.
 pathway.enrich <- as.data.frame(enrichKEGG(gene=regulome, keyType = "kegg", 

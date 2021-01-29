@@ -130,7 +130,7 @@ fi
 i=3
 if [ $NUMREPLICAS -eq 1 ]
 then
-	samples/replica_1/replica_results/1_peaks.${EXT} > results/merged_2.${EXT}
+	mv samples/replica_1/replica_results/1_peaks.${EXT} results/merged_2.${EXT}
 else
 	bedtools intersect -a samples/replica_1/replica_results/1_peaks.${EXT} -b samples/replica_2/replica_results/2_peaks.${EXT} > results/merged_2.${EXT}
 	if [ $NUMREPLICAS -ge 3 ]
