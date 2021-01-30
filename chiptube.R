@@ -69,9 +69,6 @@ else
 {
   pdf(file = "plots_go_bp.pdf",width = 16, height = 16)
   
-  a <- emapplot(ego,showCategory = 30)
-  plot(a)
-  
   b <- goplot(ego,showCategory = 30)
   plot(b)
   
@@ -108,9 +105,6 @@ else
 {
   pdf(file = "plots_go_mf.pdf",width = 16, height = 16)
   
-  a <- emapplot(ego.mf,showCategory = 30)
-  plot(a)
-  
   b <- goplot(ego.mf,showCategory = 30)
   plot(b)
   
@@ -146,9 +140,6 @@ if(nrow(GO.enrichment.cc) == 0)
 else
 {
   pdf(file = "plots_go_cc.pdf",width = 16, height = 16)
-  
-  a <- emapplot(ego.cc,showCategory = 30)
-  plot(a)
   
   b <- goplot(ego.cc,showCategory = 30)
   plot(b)
