@@ -10,3 +10,6 @@ universe_chromosomes: all
 p_value_cutoff_go: 0.05
 p_value_cutoff_kegg: 0.1
 type_of_peak: 1
+single_or_paired: 1
+tss_upstream: 1000
+tss_downstream: 1000

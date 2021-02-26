@@ -39,19 +39,46 @@ echo "P value cutoff for GO enrichment = $PVALUEGO"
 PVALUEKEGG=$(grep p_value_cutoff_kegg: $PARAMS | awk '{print($2)}')
 echo "P value cutoff for KEGG enrichment = $PVALUEKEGG"
 PEAK=$(grep type_of_peak: $PARAMS | awk '{print($2)}')
-echo "Type of peak = $PEAK"
+echo "Narrow/broad peak = $PEAK"
+SINGLE=$(grep single_or_paired: $PARAMS | awk '{print($2)}')
+echo "Single/paired read = $SINGLE"
+TSSUP=$(grep tss_upstream: $PARAMS | awk '{print($2)}')
+echo "TSS region upstream = $TSSUP"
+TSSDOWN=$(grep tss_downstream: $PARAMS | awk '{print($2)}')
+echo "TSS region downstream = $TSSDOWN"
 
 ## Creating arrays for ChIP and input samples and filling them with the paths of the previously specified files.
 CHIPS=()
 INPUTS=()
 i=0
-while [ $i -lt $NUMREPLICAS ]
-do
+
+if [ $SINGLE -eq 1 ]
+then
+  while [ $i -lt $NUMREPLICAS ]
+  do
         j=$(($i + 1))
         CHIPS[$i]=$(grep path_sample_chip_$j: $PARAMS | awk '{print($2)}')
         INPUTS[$i]=$(grep path_sample_input_$j: $PARAMS | awk '{print($2)}')
         ((i++))
-done
+  done
+  
+elif [ $SINGLE -eq 2 ]
+then
+  while [ $i -lt $NUMREPLICAS ]
+  do
+        j=$(($i + 1))
+        k=$(($i * 2))
+        l=$(($k + 1))
+        CHIPS[$k]=$(grep path_sample_chip_$j: $PARAMS | awk '{print($2)}')
+        CHIPS[$l]=$(grep path_sample_chip_$j: $PARAMS | awk '{print($3)}')
+        INPUTS[$k]=$(grep path_sample_input_$j: $PARAMS | awk '{print($2)}')
+        INPUTS[$l]=$(grep path_sample_input_$j: $PARAMS | awk '{print($3)}')
+        ((i++))
+  done
+else
+  echo "No allowed input for single/paired reads determination"
+fi
+
 echo "Samples ="
 echo "${CHIPS[@]}"
 echo "${INPUTS[@]}"
@@ -72,21 +99,50 @@ cp $GENOME genome.fa
 cd ../annotation
 cp $ANNOTATION annotation.gtf
 cd ../samples
-i=1
-while [ $i -le $NUMREPLICAS ]
-do
-        mkdir replica_$i
-        cd replica_$i
-        mkdir chip input replica_results
-        cd chip 
-        j=$(($i - 1))
-        cp ${CHIPS[$j]} sample_chip_$i.fq.gz
-        cd ..
-        cd input
-        cp ${INPUTS[$j]} sample_input_$i.fq.gz
-        cd ../..
-        ((i++))
-done
+
+
+if [ $SINGLE -eq 1 ]
+then
+  i=1
+  while [ $i -le $NUMREPLICAS ]
+  do
+  	mkdir replica_$i
+  	cd replica_$i
+      	mkdir chip input replica_results
+      	cd chip 
+      	j=$(($i - 1))
+      	cp ${CHIPS[$j]} sample_chip_$i.fq.gz
+      	cd ..
+      	cd input
+      	cp ${INPUTS[$j]} sample_input_$i.fq.gz
+      	cd ../..
+      	((i++))
+  done
+  
+elif [ $SINGLE -eq 2 ]
+then
+  i=1
+  while [ $i -le $NUMREPLICAS ]
+  do
+  	mkdir replica_$i
+  	cd replica_$i
+      	mkdir chip input replica_results
+      	cd chip 
+      	j=$(($i - 1))
+      	k=$(($j * 2))
+      	l=$(($k + 1))
+      	cp ${CHIPS[$k]} sample_chip_${i}_1.fq.gz
+      	cp ${CHIPS[$l]} sample_chip_${i}_2.fq.gz
+      	cd ..
+      	cd input
+      	cp ${INPUTS[$k]} sample_input_${i}_1.fq.gz
+      	cp ${INPUTS[$l]} sample_input_${i}_2.fq.gz
+      	cd ../..
+      	((i++))
+  done
+else
+  echo "No allowed input for single/paired reads determination"
+fi
 
 ## Generating reference genome index.
 echo ""
@@ -121,12 +177,12 @@ cd ..
 if [ $PEAK -eq 1 ]
 then
   EXT=$(echo 'narrowPeak')
-fi
 
-if [ $PEAK -eq 2 ]
+elif [ $PEAK -eq 2 ]
 then
   EXT=$(echo 'broadPeak')
 fi
+
 i=3
 if [ $NUMREPLICAS -eq 1 ]
 then
@@ -149,7 +205,7 @@ i=$(($i-1))
 
 ## Running R script for visualisation and statistical analysis.
 mkdir kegg_images
-Rscript $INSDIR/chiptube/chiptube.R merged_$((i)).${EXT} $CHR $PVALUEGO $PVALUEKEGG
+Rscript $INSDIR/chiptube/chiptube.R merged_$((i)).${EXT} $CHR $PVALUEGO $PVALUEKEGG $TSSUP $TSSDOWN $PEAK
 
 ## Motif finding.
 findMotifsGenome.pl merged_$((i)).${EXT} $GENOME . -len 9 -size 100

@@ -20,11 +20,27 @@ cd ${REPLICASDIR}
 
 ## Sample quality control and mapping reads to the reference genome.
 cd chip
-fastqc sample_chip_$i.fq.gz
-bowtie2 -x ../../../genome/index -U sample_chip_$i.fq.gz -S chip_$i.sam 2> stats_chip_$i.txt
+if [ -f sample_chip_${i}_2.fq.gz ]
+then
+   fastqc sample_chip_{$i}_1.fq.gz
+   fastqc sample_chip_{$i}_2.fq.gz
+   bowtie2 -x ../../../genome/index -1 sample_chip_{$i}_1.fq.gz -2 sample_chip_{$i}_2.fq.gz -S chip_$i.sam 2> stats_chip_$i.txt  
+else
+   fastqc sample_chip_$i.fq.gz
+   bowtie2 -x ../../../genome/index -U sample_chip_$i.fq.gz -S chip_$i.sam 2> stats_chip_$i.txt
+fi
+
 cd ../input
-fastqc sample_input_$i.fq.gz
-bowtie2 -x ../../../genome/index -U sample_input_$i.fq.gz -S input_$i.sam 2> stats_input_$i.txt
+if [ -f sample_input_${i}_2.fq.gz ]
+then
+   fastqc sample_input_{$i}_1.fq.gz
+   fastqc sample_input_{$i}_2.fq.gz
+   bowtie2 -x ../../../genome/index -1 sample_input_{$i}_1.fq.gz -2 sample_input_{$i}_2.fq.gz -S input_$i.sam 2> stats_input_$i.txt
+   
+else
+   fastqc sample_input_$i.fq.gz
+   bowtie2 -x ../../../genome/index -U sample_input_$i.fq.gz -S input_$i.sam 2> stats_input_$i.txt
+fi
 cd ..
 
 ## Generating sorted bam file.
@@ -44,9 +60,8 @@ cd replica_results
 if [ $PEAK -eq 1 ]
 then
   macs2 callpeak -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $i
-fi
-
-if [ $PEAK -eq 2 ]
+  
+elif [ $PEAK -eq 2 ]
 then
   macs2 callpeak --broad -t ../chip/chip_$i.bam -c ../input/input_$i.bam -f BAM --outdir . -n $i
 fi
