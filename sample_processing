@@ -33,8 +33,8 @@ fi
 cd ../input
 if [ -f sample_input_${i}_2.fq.gz ]
 then
-   fastqc sample_input_{$i}_1.fq.gz
-   fastqc sample_input_{$i}_2.fq.gz
+   fastqc sample_input_${i}_1.fq.gz
+   fastqc sample_input_${i}_2.fq.gz
    bowtie2 -x ../../../genome/index -1 sample_input_{$i}_1.fq.gz -2 sample_input_{$i}_2.fq.gz -S input_$i.sam 2> stats_input_$i.txt
    
 else
