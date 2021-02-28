@@ -22,8 +22,8 @@ cd ${REPLICASDIR}
 cd chip
 if [ -f sample_chip_${i}_2.fq.gz ]
 then
-   fastqc sample_chip_{$i}_1.fq.gz
-   fastqc sample_chip_{$i}_2.fq.gz
+   fastqc sample_chip_${i}_1.fq.gz
+   fastqc sample_chip_${i}_2.fq.gz
    bowtie2 -x ../../../genome/index -1 sample_chip_{$i}_1.fq.gz -2 sample_chip_{$i}_2.fq.gz -S chip_$i.sam 2> stats_chip_$i.txt  
 else
    fastqc sample_chip_$i.fq.gz
