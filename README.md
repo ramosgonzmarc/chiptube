@@ -1,5 +1,6 @@
 # chiptube
 Authors: María de las Mercedes Borreguero Palacios, Marcos Ramos González, Tomás Rodríguez Gil.
+
 For contact, please send an email to ramosgonzmarc@gmail.com
 
 chiptube is a package aimed at ChIP-seq data analysis for *Arabidopsis thaliana* that is designed to be run under a Unix environment.
