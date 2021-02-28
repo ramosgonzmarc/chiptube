@@ -67,7 +67,7 @@ then
   while [ $i -lt $NUMREPLICAS ]
   do
         j=$(($i + 1))
-        k=$(($j * 2))
+        k=$(($i * 2))
         l=$(($k + 1))
         CHIPS[$k]=$(grep path_sample_chip_$j: $PARAMS | awk '{print($2)}')
         CHIPS[$l]=$(grep path_sample_chip_$j: $PARAMS | awk '{print($3)}')
