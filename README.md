@@ -37,13 +37,15 @@ Parameters are loaded -> Sample quality control -> Mapping to the reference geno
 
 When all replicas are processed, further steps are followed:
 
-The results of all replicas are intersected -> Motifs are found
+The results of all replicas are intersected -> Motifs are found 
+
+The last of these steps is carried out by HOMER, whose parameters may be changed according to the user's preferences. For more information, check out HOMER's website: http://homer.ucsd.edu/homer/motif/ 
 
 For the visualisation and the statistical analysis of the results, a further third script (this time in R) is used. This one works as follows:
 
 Parameters are loaded -> Defining promoter regions -> Calculating the peak distribution along the genome -> Annotating peaks according to the types of DNA regions they bind to -> Saving peaks that bind to proper regions -> Listing genes affected by the TF or histone modification (its regulome) -> GO terms enrichment -> KEGG terms enrichment 
 
-chiptube define the regulome differently for narrow and broad peaks. For narrow, chiptube makes the analysis for genes in which TF binds the promotor, while for broad it uses genes in which the modification binds the promotor, introns, exons or UTRs. If the user wants different regions to be consider, please customize chiptube.R script. Also, this script can be used for other organisms apart from *Arabidopsis*, it just takes modifying the txdb file and the organisms used for GO and KEGG terms enrichment.
+chiptube defines the regulome differently for narrow and broad peaks. For narrow, chiptube makes the analysis for genes in which TF binds the promotor, while for broad it uses genes in which the modification binds the promotor, introns, exons or UTRs. If the user wants different regions to be consider, please customize chiptube.R script. Also, this script can be used for other organisms apart from *Arabidopsis*, it just takes modifying the txdb file and the organisms used for GO and KEGG terms enrichment.
 
 As for the output, chiptube creates a directory containing the following subdirectories and files:
 
