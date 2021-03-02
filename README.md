@@ -9,7 +9,7 @@ The main script in the package is chiptube.sh. This script requires an exhaustiv
 
   Usage: chiptube.sh <params_file> 
   
-A model file containing such parameters is provided in chiptube/test/test_params.txt. We strongly reccomend to use it as a template and customise it with the user's preferred values. As for this file:
+A model file containing such parameters is provided in chiptube/test/test_params.txt, as model samples that can be run for testing. We strongly reccomend to use it as a template and customise it with the user's preferred values. As for this file:
 
  - "installation_directory:" -> the directory you have installed the package in; e.g. /home/lola_flores/packages
  - "working_directory:" -> the directory where your analysis are to be saved; e.g. /home/lola_flores/my_chip_experiments
